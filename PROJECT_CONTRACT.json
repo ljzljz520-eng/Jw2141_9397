@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2309,
+    "production_files": 35,
+    "production_packages": 10,
+    "test_files": 10,
+    "production_functions": 185,
+    "decision_points": 338
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": [
+      "FarmerRecord",
+      "VisitReport",
+      "ReviewCase",
+      "CollaborationNote",
+      "AuditEvent"
+    ],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": [
+        "create farmer record",
+        "submit field visit report",
+        "review and approve report",
+        "publish report and archive farmer"
+      ],
+      "test": "TestWorkflowCreateReviewArchive"
+    },
+    {
+      "steps": [
+        "search by main crop",
+        "select matching farmer",
+        "update registry notes",
+        "publish a confirmed visit report"
+      ],
+      "test": "TestWorkflowSearchUpdatePublish"
+    },
+    {
+      "steps": [
+        "read CSV import files",
+        "validate every row",
+        "persist accepted farmers",
+        "render import and quality report"
+      ],
+      "test": "TestWorkflowImportReport"
+    }
+  ]
+}
