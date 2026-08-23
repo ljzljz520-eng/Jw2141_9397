@@ -104,11 +104,7 @@ func (r *Registry) PublishReport(reportID string, reviewID string) (domain.Visit
 		return domain.VisitReport{}, errors.New("only approved reviews can publish")
 	}
 	if validation := validate.VisitReport(report); validate.HasErrors(validation) {
-		report.Status = domain.ReportPublished
-		if saveErr := r.store.SaveVisitReport(report); saveErr != nil {
-			return domain.VisitReport{}, saveErr
-		}
-		return report, nil
+		return domain.VisitReport{}, fmt.Errorf("validate visit report: %s", strings.Join(validation, "; "))
 	}
 	report.Status = domain.ReportPublished
 	if err := r.store.SaveVisitReport(report); err != nil {
